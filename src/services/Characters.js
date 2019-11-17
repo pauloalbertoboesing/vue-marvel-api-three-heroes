@@ -12,8 +12,10 @@ export default class Characters {
 
         
         this._characters.forEach(value => {
-            this._defaultParms.name = value
-            promisses.push(this._axios.get('/characters',  {params: this._defaultParms}))
+            let params = {};
+            Object.assign(params,this._defaultParms)
+            params.name = value
+            promisses.push(this._axios.get('/characters',  {params}))
         })
 
         return Promise.all(promisses)
