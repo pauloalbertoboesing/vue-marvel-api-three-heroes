@@ -24,6 +24,7 @@
 
 <script>
 import Characters from '../../services/Characters'
+import Comics from '../../services/Comics'
 export default {
     data() {
         return {
@@ -36,12 +37,13 @@ export default {
             characters.setMyFavorites(['Thor','Hulk','Spider-Man'])
             characters.getMyFavorites().then(response => {
                 response.forEach(res => {
-                    console.log(res.data.data.results[0])
-                    debugger
                     this.heroes.push(res.data.data.results[0])
                 })
-                //this.heroes = response
             })
+    },
+
+    methods: {
+        
     }
 }
 </script>
