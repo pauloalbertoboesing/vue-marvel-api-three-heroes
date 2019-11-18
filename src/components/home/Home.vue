@@ -18,7 +18,11 @@
                     {{hero.description}}
                 </div>
                 <div class="card-footer">
-                    <div class="card-footer-item" v-for="(comic, index) in comics[hero.id]">{{comic.title}}</div>
+                    <!--div class="card-footer-item" v-for="(comic, index) in comics[hero.id]">{{comic.title}}</div-->
+                    <Comics
+                        :Comics="allComics"
+                        :characterId="hero.id"
+                    ></Comics>
                 </div>
             </div>
         </div>        
@@ -27,13 +31,19 @@
 
 <script>
 import Characters from '../../services/Characters'
-import Comics from '../../services/Comics'
+import ComicsAPI from '../../services/Comics'
+import Comics from '../../components/shared/Comics'
 export default {
     data() {
         return {
             heroes: [],
-            comics: []
+            comics: [],
+            allComics: []
         }
+    },
+
+    components: {
+        Comics
     },
 
     created() {
@@ -49,15 +59,18 @@ export default {
 
     methods: {
         getComics: function(idCharacter) {
-            let comicsAPI = new Comics(this.$axios, this.$queryParams)
+            this.comics[idCharacter] = []
+            let comicsAPI = new ComicsAPI(this.$axios, this.$queryParams)
             comicsAPI.getComicsByIdCharacter(idCharacter).then(resolve => {
                 let comics = resolve.data.data.results
-                this.comics[idCharacter] = []
                 comics.forEach(Obj => {
+                    //console.log(this.comics[idCharacter])
                    this.comics[idCharacter].push(Obj)
+                   this.allComics = Object.assign({}, this.comics)
                 })
+                
             }, reject => {
-                console.error(reject)
+                
             })
             
         }
@@ -66,5 +79,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .card-footer {
+        width: 100%;
+        border: 1px solid #000
+    }
 </style>
