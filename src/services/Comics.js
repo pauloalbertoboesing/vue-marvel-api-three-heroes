@@ -4,21 +4,16 @@ export default class Comics {
         this._defaultParms = defaultParms;
     }
 
-    getComicsByIdCharacters(listIdsCharacters) {
-        let promisses = []
+    getComicsByIdCharacter(id) {
+        let params = {};
+        Object.assign(params,this._defaultParms)
+        params.orderBy = '-onsaleDate'
+        params.limit = 5
 
-        if (listIdsCharacters == undefined)
-            throw new Error('Unspecified Ids Characters List');
+        if (id == undefined)
+            throw new Error('Unspecified Id Character');
 
-        
-        listIdsCharacters.forEach(value => {
-            let params = {};
-            Object.assign(params,this._defaultParms)
-            params.orderBy = '-onsaleDate'
-            params.limit = 5
-            promisses.push(this._axios.get(`/characters/${value}/comics`,  {params}))
-        })
+        return this._axios.get(`/characters/${id}/comics`,  {params})
 
-        return Promise.all(promisses)
     }
 };

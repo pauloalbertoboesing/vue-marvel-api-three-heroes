@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card" v-for="(hero, index) in heroes">
-            <div class="card-content">
+            <div :class="`card-content hero_${hero.id}`">
                 <div class="media">
                 <div class="media-left">
                     <figure class="image is-48x48">
@@ -17,6 +17,9 @@
                 <div class="content">
                     {{hero.description}}
                 </div>
+                <div class="card-footer">
+                    <div class="card-footer-item" v-for="(comic, index) in comics[hero.id]">{{comic.title}}</div>
+                </div>
             </div>
         </div>        
     </div>
@@ -28,22 +31,36 @@ import Comics from '../../services/Comics'
 export default {
     data() {
         return {
-            heroes: []
+            heroes: [],
+            comics: []
         }
     },
 
     created() {
-        let characters = new Characters(this.$axios, this.$queryParams)
-            characters.setMyFavorites(['Thor','Hulk','Spider-Man'])
-            characters.getMyFavorites().then(response => {
+        let charactersAPI = new Characters(this.$axios, this.$queryParams)
+            charactersAPI.setMyFavorites(['Thor','Hulk','Spider-Man'])
+            charactersAPI.getMyFavorites().then(response => {
                 response.forEach(res => {
                     this.heroes.push(res.data.data.results[0])
+                    this.getComics(res.data.data.results[0].id)
                 })
             })
     },
 
     methods: {
-        
+        getComics: function(idCharacter) {
+            let comicsAPI = new Comics(this.$axios, this.$queryParams)
+            comicsAPI.getComicsByIdCharacter(idCharacter).then(resolve => {
+                let comics = resolve.data.data.results
+                this.comics[idCharacter] = []
+                comics.forEach(Obj => {
+                   this.comics[idCharacter].push(Obj)
+                })
+            }, reject => {
+                console.error(reject)
+            })
+            
+        }
     }
 }
 </script>
