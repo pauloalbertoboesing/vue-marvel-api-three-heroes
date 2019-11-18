@@ -1,6 +1,14 @@
 <template>
     <div class="card">
         <footer class="card-footer">
+            <b-loading :is-full-page="false" :active.sync="isLoading" :can-cancel="false">
+                <b-icon
+                    pack="fas"
+                    icon="spinner"
+                    size="is-middle"
+                    custom-class="fa-spin">
+                </b-icon> <p>Loading last five comics</p>
+            </b-loading>           
             <div class="card-footer-item" v-for="(comic, index) in comicsCharacter">{{comic.title}}</div>
         </footer>
     </div>    
@@ -18,16 +26,18 @@ export default {
     },
     data() {
         return {
-            comicsCharacter: []
+            comicsCharacter: [],
+            isLoading: true
         }
     },
     mounted() {
-        this.comicsCharacter = this.Comics[this.characterId]
+        this.isLoading = true
     },
     watch: { 
         //This watcher is because JavaScript Array and Obj Changes not is reactive.
       	Comics: function(newObj, oldObj) {
           this.comicsCharacter = newObj[this.characterId]
+          this.isLoading = false
         }
     }
      
@@ -36,6 +46,7 @@ export default {
 
 <style lang="scss" scoped>
     .card {
-        width: 100%
+        width: 100%;
+        min-height: 50px;
     }
 </style>
