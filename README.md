@@ -15,6 +15,7 @@
 #### Tecnologias
 - [x] JavaScript ES5, ES6
 - [x] Vue
+- [x] Vue Router 
 - [x] Buefy UI Components
 - [x] Cypress testes automatizados E2E
 - [x] Axios httpClient
