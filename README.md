@@ -1,4 +1,4 @@
-<img src="http://pluspng.com/img-png/marvel-png-download-1153.png">
+<img src="http://pluspng.com/img-png/marvel-png-download-1153.png" width="250x">
 # Meus Três Heróis Favoritos
 
 #### Descrição
